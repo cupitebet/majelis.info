@@ -1,0 +1,57 @@
+# Hostinger & PHP
+.htaccess.backup
+error_log
+php_errors.log
+
+# WordPress (jika menggunakan WordPress)
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+wp-content/backup*/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+tmp/
+temp/
+cache/
+
+# Database backups
+*.sql
+*.sql.gz
+*.sql.zip
+
+# Sensitive data
+config.php
+database.php
+credentials.json
+
+# Node modules (jika ada)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build files
+dist/
+build/
