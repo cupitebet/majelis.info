@@ -1,0 +1,5 @@
+# wp-config.php sudah di-remove dari Git
+# File ini tetap ada di local, tapi tidak akan di-track oleh Git
+
+# PENTING: Jangan commit file ini ke GitHub!
+# File ini berisi kredensial database yang sensitif
