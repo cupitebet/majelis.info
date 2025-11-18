@@ -5,9 +5,31 @@ php_errors.log
 
 # WordPress (jika menggunakan WordPress)
 wp-config.php
+wp-config-local.php
+
+# WordPress Uploads & Cache
 wp-content/uploads/
+wp-content/uploadpath.php
 wp-content/cache/
+wp-content/backups/
 wp-content/backup*/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+
+# WordPress Plugins yang auto-generated
+wp-content/plugins/akismet/
+wp-content/plugins/hello.php
+
+# WordPress Optimizations
+wp-content/object-cache.php
+wp-content/mu-plugins/*/
+
+# WP Rocket & Caching plugins
+wp-content/cache/
+wp-content/wp-rocket-config/
+wp-content/wflogs/
 
 # Environment variables
 .env
