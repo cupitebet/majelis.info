@@ -1,11 +1,17 @@
 name: Deploy to Hostinger
 
+# Workflow DISABLED - uncomment 'on:' section below to enable
+# Setup GitHub Secrets first: FTP_SERVER, FTP_USERNAME, FTP_PASSWORD
+
+# on:
+#   push:
+#     branches:
+#       - main
+#       - master
+#   workflow_dispatch:
+
 on:
-  push:
-    branches:
-      - main
-      - master
-  workflow_dispatch:
+  workflow_dispatch:  # Manual trigger only
 
 jobs:
   deploy:
