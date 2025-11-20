@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../app/app_config.dart';
 
-/// WordPress REST API Service
+/// WordPress / MeUp REST API Service
 class WordPressAPI {
-  final String baseUrl = AppConfig.wordpressApiUrl;
+  // Use MeUp namespace for event-related endpoints, and WP v2 for generic WP endpoints
+  final String meupBase = AppConfig.meupApiUrl; // e.g. https://majelis.info/wp-json/meup/v1
+  final String wpBase = AppConfig.wordpressApiUrl; // e.g. https://majelis.info/wp-json/wp/v2
 
   // Headers
   Map<String, String> get headers => {
@@ -28,7 +30,7 @@ class WordPressAPI {
         if (search != null) 'search': search,
       };
 
-      final uri = Uri.parse('$baseUrl/events')
+        final uri = Uri.parse('${meupBase}/events')
           .replace(queryParameters: queryParams);
 
       final response = await http.get(uri, headers: headers);
@@ -47,7 +49,7 @@ class WordPressAPI {
   Future<Map<String, dynamic>> getEventDetail(int eventId) async {
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/events/$eventId'),
+        Uri.parse('${meupBase}/events/$eventId'),
         headers: headers,
       );
 
@@ -65,7 +67,7 @@ class WordPressAPI {
   Future<List<dynamic>> getCategories() async {
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/event-categories'),
+        Uri.parse('${meupBase}/event-categories'),
         headers: headers,
       );
 
@@ -109,7 +111,7 @@ class WordPressAPI {
   }) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/users'),
+        Uri.parse('${wpBase}/users'),
         headers: headers,
         body: json.encode({
           'email': email,
@@ -132,7 +134,7 @@ class WordPressAPI {
   Future<Map<String, dynamic>> getCurrentUser(String token) async {
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/users/me'),
+        Uri.parse('${wpBase}/users/me'),
         headers: {
           ...headers,
           'Authorization': 'Bearer $token',
