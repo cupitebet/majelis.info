@@ -1,13 +1,18 @@
 name: Deploy to Hostinger
 
-# Workflow DISABLED - uncomment 'on:' section below to enable
-# Setup GitHub Secrets first: FTP_SERVER, FTP_USERNAME, FTP_PASSWORD
+# ⚠️ SETUP REQUIRED:
+# 1. Go to: https://github.com/cupitebet/majelis.info/settings/secrets/actions
+# 2. Add these secrets:
+#    - FTP_SERVER: ftp.majelis.info (atau IP server Hostinger)
+#    - FTP_USERNAME: your FTP username
+#    - FTP_PASSWORD: your FTP password
+# 3. Verify FTP credentials work in FileZilla/WinSCP first!
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Manual trigger still available
+  workflow_dispatch:  # Manual trigger available
 
 jobs:
   deploy:
@@ -18,13 +23,33 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to Hostinger via FTP
+      - name: 🔍 Verify FTP Secrets are Set
+        run: |
+          if [ -z "${{ secrets.FTP_SERVER }}" ]; then
+            echo "❌ ERROR: FTP_SERVER secret is not set!"
+            echo "Please add it in: Settings → Secrets and variables → Actions"
+            exit 1
+          fi
+          if [ -z "${{ secrets.FTP_USERNAME }}" ]; then
+            echo "❌ ERROR: FTP_USERNAME secret is not set!"
+            exit 1
+          fi
+          if [ -z "${{ secrets.FTP_PASSWORD }}" ]; then
+            echo "❌ ERROR: FTP_PASSWORD secret is not set!"
+            exit 1
+          fi
+          echo "✅ All FTP secrets are configured"
+          echo "🔐 Server: ${{ secrets.FTP_SERVER }}"
+
+      - name: 📤 Deploy to Hostinger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /public_html/
+          protocol: ftp
+          port: 21
           exclude: |
             **/.git*
             **/.git*/**
@@ -32,3 +57,5 @@ jobs:
             **/.env
             **/DEPLOYMENT.md
             **/.gitignore
+            **/.vscode/**
+            **/wp-config.php
