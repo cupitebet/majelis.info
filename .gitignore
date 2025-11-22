@@ -1,13 +1,25 @@
-# Hostinger & PHP
-.htaccess.backup
-error_log
-php_errors.log
+# ============================================
+# DEPLOYMENT STRATEGY: CHILD THEME + CUSTOM FILES ONLY
+# WordPress core, plugins, dan parent theme TIDAK di-commit
+# ============================================
 
-# WordPress (jika menggunakan WordPress)
+# WordPress CORE - EXCLUDE dari Git
+/wp-admin/
+/wp-includes/
+/wp-*.php
+/xmlrpc.php
+/license.txt
+/readme.html
+index.php
+
+# WordPress CONFIG - EXCLUDE (sensitive)
 wp-config.php
 wp-config-local.php
+wp-config-sample.php
+.htaccess
+.htaccess.backup
 
-# WordPress Uploads & Cache
+# WordPress UPLOADS & CACHE - EXCLUDE (terlalu besar)
 wp-content/uploads/
 wp-content/uploadpath.php
 wp-content/cache/
@@ -17,14 +29,23 @@ wp-content/upgrade/
 wp-content/backup-db/
 wp-content/advanced-cache.php
 wp-content/wp-cache-config.php
-
-# WordPress Plugins yang auto-generated
-wp-content/plugins/akismet/
-wp-content/plugins/hello.php
-
-# WordPress Optimizations
 wp-content/object-cache.php
-wp-content/mu-plugins/*/
+
+# WordPress PLUGINS - EXCLUDE SEMUA (kecuali custom plugins)
+wp-content/plugins/*
+!wp-content/plugins/.gitkeep
+# Jika ada custom plugin, uncomment:
+# !wp-content/plugins/my-custom-plugin/
+
+# WordPress THEMES - EXCLUDE parent themes
+wp-content/themes/twenty*/
+wp-content/themes/meup/
+# HANYA COMMIT meup-child (custom theme)
+!wp-content/themes/meup-child/
+
+# WordPress MU-Plugins - EXCLUDE kecuali custom
+wp-content/mu-plugins/*
+!wp-content/mu-plugins/.gitkeep
 
 # WP Rocket & Caching plugins
 wp-content/cache/
