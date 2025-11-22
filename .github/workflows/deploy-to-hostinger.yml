@@ -28,8 +28,10 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /public_html/
+          server-dir: /domains/majelis.info/public_html/
           local-dir: ./
+          protocol: ftps
+          port: 21
           exclude: |
             **/.git*
             **/.git*/**
