@@ -31,5 +31,5 @@ jobs:
           remote_path: /domains/majelis.info/public_html/
           local_path: ./
           sftp_only: true
-          port: 22
+          port: 65002
           args: '-o ConnectTimeout=5'
