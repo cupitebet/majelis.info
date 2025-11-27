@@ -1,0 +1,144 @@
+{
+  "name": "Majelis.info - Platform Event Islami",
+  "short_name": "Majelis",
+  "description": "Platform marketplace untuk event dan acara Islami di Indonesia",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#1E3A8A",
+  "background_color": "#FFFFFF",
+  "lang": "id",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/wp-content/themes/meup-child/assets/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/meup-child/assets/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/meup-child/assets/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/meup-child/assets/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/meup-child/assets/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/meup-child/assets/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/meup-child/assets/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/meup-child/assets/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/wp-content/themes/meup-child/assets/icons/icon-maskable-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/wp-content/themes/meup-child/assets/icons/icon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/wp-content/themes/meup-child/assets/screenshots/screenshot-1.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/wp-content/themes/meup-child/assets/screenshots/screenshot-2.png",
+      "sizes": "1080x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "categories": [
+    "lifestyle",
+    "social",
+    "education"
+  ],
+  "shortcuts": [
+    {
+      "name": "Cari Event",
+      "short_name": "Cari",
+      "description": "Cari event Islami terdekat",
+      "url": "/events",
+      "icons": [
+        {
+          "src": "/wp-content/themes/meup-child/assets/icons/search-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Tiket Saya",
+      "short_name": "Tiket",
+      "description": "Lihat tiket yang sudah dibeli",
+      "url": "/my-tickets",
+      "icons": [
+        {
+          "src": "/wp-content/themes/meup-child/assets/icons/ticket-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Event Favorit",
+      "short_name": "Favorit",
+      "description": "Event yang disimpan",
+      "url": "/favorites",
+      "icons": [
+        {
+          "src": "/wp-content/themes/meup-child/assets/icons/favorite-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "share_target": {
+    "action": "/share-event",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}
