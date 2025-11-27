@@ -28,9 +28,24 @@ jobs:
           server: ftp.majelis.info
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /domains/majelis.info/public_html/
+          server-dir: /home/u362428227/domains/majelis.info/public_html/
+          protocol: ftp
+          port: 21
           exclude: |
             **/.git*
             **/.git*/**
+            **/.github/**
             **/node_modules/**
-            .github/
+            **/.env
+            **/.gitignore
+            **/.vscode/**
+            **/wp-config.php
+            **/*.md
+            **/commit-wordpress.sh
+            **/flutter-quick-setup.sh
+            **/flutter-app-structure/**
+            **/_deprecated/**
+            **/scripts/**
+            **/wp-admin.zip
+            **/.htaccess.bk
+            **/wp-config-SAMPLE.txt
