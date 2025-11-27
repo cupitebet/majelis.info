@@ -226,6 +226,40 @@ cat .gitignore | grep uploads
 
 ---
 
-**Need help?** Check dokumentasi lengkap atau tanya!
+## 🚀 SETUP AUTO-DEPLOY (PENTING!)
+
+Setelah upload WordPress ke GitHub, setup auto-deploy agar setiap push otomatis sync ke Hostinger:
+
+### Quick Setup (5 Menit):
+
+**1. Ambil FTP Credentials**
+- https://hpanel.hostinger.com → Files → FTP Accounts
+- Copy: Host, Username, Password
+
+**2. Add GitHub Secrets**
+- https://github.com/cupitebet/majelis.info/settings/secrets/actions
+- Add 3 secrets:
+  - `FTP_SERVER` = `ftp.majelis.info`
+  - `FTP_USERNAME` = dari Hostinger
+  - `FTP_PASSWORD` = dari Hostinger
+
+**3. Test Deploy**
+```bash
+git commit --allow-empty -m "test: auto-deploy"
+git push origin main
+```
+
+**4. Verify**
+- https://github.com/cupitebet/majelis.info/actions
+- Workflow harus hijau ✅
+
+✨ **Setelah ini, setiap push auto-deploy ke Hostinger!**
+
+---
+
+**Dokumentasi lengkap:**
+- Auto-deploy FTP: `FTP-AUTO-DEPLOY-GUIDE.md`
+- Git Integration: `HOSTINGER-GIT-INTEGRATION-GUIDE.md`
+- Helper script: `bash scripts/verify-github-secrets.sh`
 
 🚀 Happy Coding!

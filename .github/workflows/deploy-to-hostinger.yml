@@ -1,50 +1,31 @@
-name: Deploy to Hostinger
+name: Deploy Child Theme to Hostinger
 
-# ⚠️ SETUP REQUIRED:
-# 1. Go to: https://github.com/cupitebet/majelis.info/settings/secrets/actions
-# 2. Add these secrets:
-#    - FTP_SERVER: ftp.majelis.info (atau IP server Hostinger)
-#    - FTP_USERNAME: your FTP username
-#    - FTP_PASSWORD: your FTP password
-# 3. Verify FTP credentials work in FileZilla/WinSCP first!
+# Deploy ONLY meup-child theme + custom files
+# WordPress core & plugins are NOT deployed
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Manual trigger available
+    paths:
+      - 'wp-content/themes/meup-child/**'
+      - 'majelis-*.css'
+      - 'majelis-*.php'
+  workflow_dispatch:  # Manual trigger
 
 jobs:
   deploy:
-    name: Deploy to Hostinger via FTP
+    name: Deploy Child Theme via FTP
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🔍 Verify FTP Secrets are Set
-        run: |
-          if [ -z "${{ secrets.FTP_SERVER }}" ]; then
-            echo "❌ ERROR: FTP_SERVER secret is not set!"
-            echo "Please add it in: Settings → Secrets and variables → Actions"
-            exit 1
-          fi
-          if [ -z "${{ secrets.FTP_USERNAME }}" ]; then
-            echo "❌ ERROR: FTP_USERNAME secret is not set!"
-            exit 1
-          fi
-          if [ -z "${{ secrets.FTP_PASSWORD }}" ]; then
-            echo "❌ ERROR: FTP_PASSWORD secret is not set!"
-            exit 1
-          fi
-          echo "✅ All FTP secrets are configured"
-          echo "🔐 Server: ${{ secrets.FTP_SERVER }}"
-
-      - name: 📤 Deploy to Hostinger via FTP
+      - name: Deploy Child Theme via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          server: ftp.majelis.info
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /home/u362428227/domains/majelis.info/public_html/
