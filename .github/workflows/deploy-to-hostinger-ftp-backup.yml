@@ -2,7 +2,6 @@ name: Deploy Child Theme to Hostinger
 
 # Deploy ONLY meup-child theme + custom files
 # WordPress core & plugins are NOT deployed
-# Using FTPS (FTP over SSL/TLS) for encrypted connection
 
 on:
   push:
@@ -16,21 +15,21 @@ on:
 
 jobs:
   deploy:
-    name: Deploy Child Theme via FTPS
+    name: Deploy Child Theme via FTP
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy Child Theme via FTPS (Encrypted)
+      - name: Deploy Child Theme via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ftp.majelis.info
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /home/u362428227/domains/majelis.info/public_html/
-          protocol: ftps
+          protocol: ftp
           port: 21
           exclude: |
             **/.git*
