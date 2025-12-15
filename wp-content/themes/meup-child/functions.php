@@ -723,3 +723,211 @@ function majelis_auto_trigger_event_published( $post_id, $post ) {
         'body'    => wp_json_encode( $event_data ),
     ));
 }
+
+/**
+ * ========================================
+ * SCHEMA.ORG STRUCTURED DATA
+ * ========================================
+ */
+
+/**
+ * Add Organization Schema to site
+ */
+if ( ! function_exists( 'majelis_add_organization_schema' ) ) {
+    function majelis_add_organization_schema() {
+        // Only add on homepage or specific pages
+        if ( ! is_front_page() && ! is_page( array( 'kontak', 'transparansi-donasi', 'links' ) ) ) {
+            return;
+        }
+
+        $schema = array(
+            '@context'    => 'https://schema.org',
+            '@type'       => 'Organization',
+            'name'        => get_bloginfo( 'name' ),
+            'legalName'   => 'Majelis.info',
+            'url'         => home_url( '/' ),
+            'logo'        => get_stylesheet_directory_uri() . '/assets/icons/icon-512x512.png',
+            'description' => 'Platform agregator jadwal kajian dan majelis ilmu terpercaya di Indonesia. Menghubungkan jamaah dengan berbagai acara keislaman di seluruh nusantara.',
+            'foundingDate' => '2021',
+            'contactPoint' => array(
+                '@type'       => 'ContactPoint',
+                'telephone'   => '+62-899-9150-143',
+                'contactType' => 'customer service',
+                'email'       => 'info@majelis.info',
+                'areaServed'  => 'ID',
+                'availableLanguage' => array( 'Indonesian', 'id' ),
+            ),
+            'address' => array(
+                '@type'           => 'PostalAddress',
+                'streetAddress'   => 'Jl. Guru Mughni No.27F',
+                'addressLocality' => 'Jakarta',
+                'addressCountry'  => 'ID',
+            ),
+            'sameAs' => array(
+                'https://t.me/JadwalMajelis',
+                home_url( '/links/' ),
+            ),
+            'potentialAction' => array(
+                '@type'       => 'SearchAction',
+                'target'      => array(
+                    '@type'       => 'EntryPoint',
+                    'urlTemplate' => home_url( '/?s={search_term_string}' ),
+                ),
+                'query-input' => 'required name=search_term_string',
+            ),
+        );
+
+        echo "\n<!-- Organization Schema -->\n";
+        echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ) . '</script>' . "\n";
+        echo "<!-- End Organization Schema -->\n\n";
+    }
+    add_action( 'wp_head', 'majelis_add_organization_schema', 5 );
+}
+
+/**
+ * Add WebSite Schema
+ */
+if ( ! function_exists( 'majelis_add_website_schema' ) ) {
+    function majelis_add_website_schema() {
+        if ( ! is_front_page() ) {
+            return;
+        }
+
+        $schema = array(
+            '@context' => 'https://schema.org',
+            '@type'    => 'WebSite',
+            'name'     => get_bloginfo( 'name' ),
+            'url'      => home_url( '/' ),
+            'description' => get_bloginfo( 'description' ),
+            'publisher' => array(
+                '@type' => 'Organization',
+                'name'  => get_bloginfo( 'name' ),
+                'logo'  => array(
+                    '@type'  => 'ImageObject',
+                    'url'    => get_stylesheet_directory_uri() . '/assets/icons/icon-512x512.png',
+                ),
+            ),
+            'potentialAction' => array(
+                '@type'       => 'SearchAction',
+                'target'      => array(
+                    '@type'       => 'EntryPoint',
+                    'urlTemplate' => home_url( '/?s={search_term_string}' ),
+                ),
+                'query-input' => 'required name=search_term_string',
+            ),
+        );
+
+        echo "\n<!-- WebSite Schema -->\n";
+        echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ) . '</script>' . "\n";
+        echo "<!-- End WebSite Schema -->\n\n";
+    }
+    add_action( 'wp_head', 'majelis_add_website_schema', 5 );
+}
+
+/**
+ * Add Event Schema for event pages
+ */
+if ( ! function_exists( 'majelis_add_event_schema' ) ) {
+    function majelis_add_event_schema() {
+        if ( ! is_singular( 'mep_events' ) ) {
+            return;
+        }
+
+        global $post;
+        $event_id = get_the_ID();
+
+        // Get event data
+        $event_start = get_post_meta( $event_id, 'event_start_datetime', true );
+        $event_end   = get_post_meta( $event_id, 'event_end_datetime', true );
+        $location    = get_post_meta( $event_id, 'mep_location', true );
+        $location_name = get_post_meta( $event_id, 'mep_location_name', true );
+        $event_lat   = get_post_meta( $event_id, 'mep_latitude', true );
+        $event_lng   = get_post_meta( $event_id, 'mep_longitude', true );
+
+        $schema = array(
+            '@context'    => 'https://schema.org',
+            '@type'       => 'Event',
+            'name'        => get_the_title(),
+            'description' => wp_trim_words( get_the_excerpt() ? get_the_excerpt() : get_the_content(), 50 ),
+            'url'         => get_permalink(),
+            'image'       => get_the_post_thumbnail_url( $event_id, 'large' ),
+            'startDate'   => $event_start ? date( 'c', strtotime( $event_start ) ) : '',
+            'endDate'     => $event_end ? date( 'c', strtotime( $event_end ) ) : '',
+            'eventStatus' => 'https://schema.org/EventScheduled',
+            'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
+            'organizer'   => array(
+                '@type' => 'Organization',
+                'name'  => get_bloginfo( 'name' ),
+                'url'   => home_url( '/' ),
+            ),
+        );
+
+        // Add location if available
+        if ( $location ) {
+            $schema['location'] = array(
+                '@type'   => 'Place',
+                'name'    => $location_name ? $location_name : 'Event Location',
+                'address' => array(
+                    '@type' => 'PostalAddress',
+                    'streetAddress' => $location,
+                    'addressCountry' => 'ID',
+                ),
+            );
+
+            if ( $event_lat && $event_lng ) {
+                $schema['location']['geo'] = array(
+                    '@type'     => 'GeoCoordinates',
+                    'latitude'  => $event_lat,
+                    'longitude' => $event_lng,
+                );
+            }
+        }
+
+        echo "\n<!-- Event Schema -->\n";
+        echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ) . '</script>' . "\n";
+        echo "<!-- End Event Schema -->\n\n";
+    }
+    add_action( 'wp_head', 'majelis_add_event_schema', 5 );
+}
+
+/**
+ * Add BreadcrumbList Schema
+ */
+if ( ! function_exists( 'majelis_add_breadcrumb_schema' ) ) {
+    function majelis_add_breadcrumb_schema() {
+        if ( is_front_page() ) {
+            return;
+        }
+
+        $breadcrumbs = array(
+            '@context' => 'https://schema.org',
+            '@type'    => 'BreadcrumbList',
+            'itemListElement' => array(),
+        );
+
+        $position = 1;
+
+        // Home
+        $breadcrumbs['itemListElement'][] = array(
+            '@type'    => 'ListItem',
+            'position' => $position++,
+            'name'     => 'Home',
+            'item'     => home_url( '/' ),
+        );
+
+        // Add current page
+        if ( is_singular() ) {
+            $breadcrumbs['itemListElement'][] = array(
+                '@type'    => 'ListItem',
+                'position' => $position++,
+                'name'     => get_the_title(),
+                'item'     => get_permalink(),
+            );
+        }
+
+        echo "\n<!-- BreadcrumbList Schema -->\n";
+        echo '<script type="application/ld+json">' . wp_json_encode( $breadcrumbs, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ) . '</script>' . "\n";
+        echo "<!-- End BreadcrumbList Schema -->\n\n";
+    }
+    add_action( 'wp_head', 'majelis_add_breadcrumb_schema', 5 );
+}
