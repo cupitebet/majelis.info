@@ -307,6 +307,99 @@ if ( ! function_exists( 'majelis_pwa_install_button' ) ) {
 
 /**
  * ========================================
+ * Notification opt-in (user-initiated)
+ * ========================================
+ */
+
+if ( ! function_exists( 'majelis_notification_prompt_styles' ) ) {
+    function majelis_notification_prompt_styles() {
+        ?>
+        <style>
+        #majelis-notification-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #0ea5e9;
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 12px 18px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 12px 30px rgba(14, 165, 233, 0.25);
+            display: none;
+            z-index: 9999;
+        }
+
+        #majelis-notification-button[data-state="granted"] {
+            display: none;
+        }
+        </style>
+        <?php
+    }
+    add_action( 'wp_head', 'majelis_notification_prompt_styles' );
+}
+
+if ( ! function_exists( 'majelis_notification_prompt_button' ) ) {
+    function majelis_notification_prompt_button() {
+        ?>
+        <button id="majelis-notification-button" type="button" aria-live="polite">
+            🔔 Aktifkan notifikasi kajian
+        </button>
+        <script>
+        (function() {
+            if (!('Notification' in window)) {
+                return;
+            }
+
+            const button = document.getElementById('majelis-notification-button');
+            if (!button) {
+                return;
+            }
+
+            const renderState = () => {
+                const state = Notification.permission;
+                if (state === 'default') {
+                    button.style.display = 'block';
+                    button.dataset.state = 'prompt';
+                    button.textContent = '🔔 Aktifkan notifikasi kajian';
+                } else if (state === 'granted') {
+                    button.dataset.state = 'granted';
+                    button.style.display = 'none';
+                } else {
+                    button.dataset.state = 'denied';
+                    button.textContent = 'Notifikasi diblokir';
+                    button.style.display = 'block';
+                    button.disabled = true;
+                    button.style.opacity = '0.6';
+                }
+            };
+
+            button.addEventListener('click', async () => {
+                try {
+                    button.disabled = true;
+                    const permission = await Notification.requestPermission();
+                    if (permission === 'granted') {
+                        console.log('[Majelis] Notification permission granted');
+                    }
+                } catch (err) {
+                    console.warn('[Majelis] Notification permission failed', err);
+                } finally {
+                    button.disabled = false;
+                    renderState();
+                }
+            });
+
+            renderState();
+        })();
+        </script>
+        <?php
+    }
+    add_action( 'wp_footer', 'majelis_notification_prompt_button', 997 );
+}
+
+/**
+ * ========================================
  * AUTOMATION & WEBHOOK ENDPOINTS
  * ========================================
  */
