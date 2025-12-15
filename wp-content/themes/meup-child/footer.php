@@ -2,44 +2,51 @@
 /**
  * Child theme footer override
  *
- * This file attempts to load the parent's `footer.php`, capture its output,
- * strip any mentions or links to "ovatheme", and then echo the cleaned markup.
- * If the parent footer is not available in the environment, a minimal fallback
- * footer is printed instead.
+ * Membuat footer bersih tanpa teks placeholder "COMING SOON" dan kredit lama
+ * dari parent theme. Footer ini menggunakan data dinamis (tahun berjalan,
+ * nama situs) dan menambahkan tautan penting untuk meningkatkan rasa percaya
+ * pengunjung.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-// Try to locate parent's footer.php without loading it automatically
-$parent_path = locate_template( 'footer.php', false, false );
+// Data dinamis
+$year      = date( 'Y' );
+$site_name = get_bloginfo( 'name' );
+$site_url  = esc_url( home_url( '/' ) );
 
-if ( $parent_path && file_exists( $parent_path ) ) {
-    // Capture parent footer output
-    ob_start();
-    include $parent_path;
-    $parent_footer = ob_get_clean();
-
-    // Defensive removal of OvaTheme mentions and links
-    // Remove anchor tags that contain 'ovatheme' in href
-    $parent_footer = preg_replace('#<a[^>]+ovatheme[^>]*>.*?</a>#is', '', $parent_footer);
-    // Remove textual mentions like 'Design by OvaTheme' (case-insensitive)
-    $parent_footer = preg_replace('/Design(ed)?\s*(and|&)\s*Develop(ed)?\s*by\s*OvaTheme/i', '', $parent_footer);
-
-    // If you want to replace with custom credit, uncomment and adjust below:
-    // $custom_credit = '<div class="meup-child-credit">&copy; ' . date('Y') . ' ' . esc_html( get_bloginfo('name') ) . '</div>';
-    // $parent_footer = preg_replace('/<div[^>]*class=["\']?site-info["\']?[^>]*>.*?<\/div>/is', $custom_credit, $parent_footer);
-
-    echo $parent_footer;
-    return;
-}
-
-// Fallback minimal footer when parent footer.php is not present in repository/runtime
 ?>
-<footer id="colophon" class="site-footer" role="contentinfo">
-    <div class="site-info" style="text-align:center;padding:12px 0;font-size:14px;color:#bfc7d6;">
-        &copy; <?php echo date( 'Y' ); ?> <a href="<?php echo esc_url( home_url( '/' ) ); ?>" style="color:inherit;text-decoration:none;"><?php bloginfo( 'name' ); ?></a>
+<footer id="colophon" class="site-footer" role="contentinfo" style="background:#0f172a;color:#cbd5e1;padding:32px 0;">
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;align-items:flex-start;">
+        <div>
+            <h2 style="margin:0 0 12px;font-size:18px;color:#e2e8f0;">Majelis.info</h2>
+            <p style="margin:0 0 8px;line-height:1.6;">Platform acara kajian &amp; maulid – jadwal terpercaya dari panitia resmi.</p>
+            <p style="margin:0;line-height:1.6;">Jl. Guru Mughni No.27F, Jakarta Selatan<br>Telepon/WA: <a href="tel:+628999150143" style="color:#fbbf24;text-decoration:none;">+62 899-9150-143</a><br>Email: <a href="mailto:halo@majelis.info" style="color:#fbbf24;text-decoration:none;">halo@majelis.info</a></p>
+        </div>
+
+        <div>
+            <h3 style="margin:0 0 12px;font-size:16px;color:#e2e8f0;">Keamanan &amp; Transparansi</h3>
+            <ul style="list-style:none;margin:0;padding:0;line-height:1.8;">
+                <li><a href="<?php echo esc_url( home_url( '/transparansi-donasi/' ) ); ?>" style="color:#fbbf24;text-decoration:none;">Transparansi Donasi &amp; Tiket</a></li>
+                <li><a href="<?php echo esc_url( home_url( '/kontak/' ) ); ?>" style="color:#fbbf24;text-decoration:none;">Kontak / Redaksi</a></li>
+                <li><a href="<?php echo esc_url( home_url( '/kebijakan-privasi/' ) ); ?>" style="color:#fbbf24;text-decoration:none;">Kebijakan Privasi</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 style="margin:0 0 12px;font-size:16px;color:#e2e8f0;">Ikuti &amp; Bagikan</h3>
+            <ul style="list-style:none;margin:0;padding:0;line-height:1.8;">
+                <li><a href="https://t.me/JadwalMajelis" style="color:#fbbf24;text-decoration:none;">Telegram @JadwalMajelis</a></li>
+                <li><a href="<?php echo esc_url( home_url( '/links/' ) ); ?>" style="color:#fbbf24;text-decoration:none;">Link Hub Sosial</a></li>
+                <li><a href="<?php echo esc_url( home_url( '/event/' ) ); ?>" style="color:#fbbf24;text-decoration:none;">Jadwal Kajian Terbaru</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="site-info" style="text-align:center;padding:16px 0 0;font-size:14px;color:#94a3b8;">
+        &copy; <?php echo esc_html( $year ); ?> <a href="<?php echo $site_url; ?>" style="color:inherit;text-decoration:none;"><?php echo esc_html( $site_name ); ?></a>. Semua hak dilindungi.
     </div>
 </footer>
 
