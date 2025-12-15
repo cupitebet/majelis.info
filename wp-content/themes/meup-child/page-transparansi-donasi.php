@@ -1,79 +1,234 @@
 <?php
 /**
  * Template Name: Transparansi Donasi & Tiket
- * Description: Halaman statis untuk menjelaskan alur donasi/tiket dan akuntabilitas.
+ *
+ * Template untuk menampilkan informasi transparansi donasi dan tiket event
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-    exit; // Exit if accessed directly
-}
+get_header(); ?>
 
-get_header();
-?>
+<div class="transparansi-donasi-page" style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
 
-<main id="primary" class="site-main" style="max-width:900px;margin:0 auto;padding:48px 20px 64px;">
-    <header style="margin-bottom:24px;">
-        <p style="text-transform:uppercase;font-weight:700;letter-spacing:0.08em;color:#0ea5e9;margin:0 0 8px;">Transparansi</p>
-        <h1 style="margin:0 0 12px;font-size:32px;line-height:1.2;">Transparansi Donasi &amp; Tiket</h1>
-        <p style="margin:0;color:#475569;">Standar keamanan penyaluran donasi dan pemesanan tiket di Majelis.info.</p>
-    </header>
+    <?php while ( have_posts() ) : the_post(); ?>
 
-    <section style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(15,23,42,0.04);margin-bottom:20px;">
-        <h2 style="margin-top:0;font-size:20px;color:#0f172a;">1) Siapa Pengelola?</h2>
-        <p style="margin:0 0 12px;line-height:1.7;">Majelis.info dikelola oleh tim kurasi internal yang bekerja sama langsung dengan panitia resmi setiap acara. Semua nomor rekening dan tiket yang tampil di halaman event telah diverifikasi dengan surat atau kontak panitia.</p>
-        <ul style="margin:0;padding-left:18px;line-height:1.7;color:#475569;">
-            <li>Nama organisasi: <strong>Majelis.info</strong></li>
-            <li>Alamat kantor: Jl. Guru Mughni No.27F, Jakarta Selatan</li>
-            <li>Kontak verifikasi: <a href="mailto:halo@majelis.info">halo@majelis.info</a> / <a href="https://wa.me/628999150143" target="_blank" rel="noopener">WA +62 899-9150-143</a></li>
-        </ul>
-    </section>
+    <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-    <section style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(15,23,42,0.04);margin-bottom:20px;">
-        <h2 style="margin-top:0;font-size:20px;color:#0f172a;">2) Alur Penyaluran Donasi</h2>
-        <ol style="margin:0;padding-left:18px;line-height:1.7;color:#475569;">
-            <li>Penggalangan diumumkan di halaman event resmi.</li>
-            <li>Donatur transfer ke rekening/QRIS yang tercantum atas nama panitia.</li>
-            <li>Panitia mengirim bukti penerimaan ke tim Majelis.info.</li>
-            <li>Rekap donasi dan bukti penyerahan dipublikasikan di bagian &ldquo;Laporan&rdquo; di halaman event atau arsip PDF.</li>
-        </ol>
-        <p style="margin:12px 0 0;color:#0f172a;font-weight:600;">Pertanyaan atau komplain? Kirim ke <a href="mailto:lapor@majelis.info">lapor@majelis.info</a>.</p>
-    </section>
+        <header class="entry-header" style="text-align: center; margin-bottom: 40px;">
+            <h1 class="entry-title" style="font-size: 2.5em; color: #1E3A8A; margin-bottom: 10px;">
+                <?php the_title(); ?>
+            </h1>
+            <p style="font-size: 1.1em; color: #64748b;">
+                Komitmen Kami untuk Transparansi dan Kepercayaan
+            </p>
+        </header>
 
-    <section style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(15,23,42,0.04);margin-bottom:20px;">
-        <h2 style="margin-top:0;font-size:20px;color:#0f172a;">3) Pemesanan Tiket</h2>
-        <ul style="margin:0;padding-left:18px;line-height:1.7;color:#475569;">
-            <li>Pemesanan online hanya dibuka melalui tombol <strong>Daftar</strong>/<strong>Booking</strong> di halaman event.</li>
-            <li>Jika tertulis &ldquo;Online booking closed&rdquo;, panitia hanya melayani <strong>loket onsite</strong> sesuai jam yang tertera.</li>
-            <li>Tidak ada biaya tambahan di luar yang diumumkan di halaman event.</li>
-        </ul>
-        <p style="margin:12px 0 0;color:#0f172a;font-weight:600;">Butuh bantuan? Hubungi <a href="mailto:tiket@majelis.info">tiket@majelis.info</a> atau WA support di footer.</p>
-    </section>
+        <div class="entry-content" style="line-height: 1.8;">
 
-    <section style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(15,23,42,0.04);margin-bottom:20px;">
-        <h2 style="margin-top:0;font-size:20px;color:#0f172a;">4) Laporan &amp; Bukti Serah</h2>
-        <p style="margin:0 0 12px;line-height:1.7;">Setiap event donasi akan memiliki tautan laporan setelah penyerahan. Format laporan:</p>
-        <ul style="margin:0;padding-left:18px;line-height:1.7;color:#475569;">
-            <li>Total donasi diterima &amp; pengeluaran.</li>
-            <li>Bukti transfer/penyerahan ke panitia (foto/scan).</li>
-            <li>Kontak penanggung jawab panitia.</li>
-        </ul>
-        <p style="margin:12px 0 0;color:#0f172a;font-weight:600;">Laporan dapat diakses melalui tombol &ldquo;Laporan Donasi&rdquo; di halaman event yang relevan.</p>
-    </section>
+            <?php the_content(); ?>
 
-    <section style="background:#ecfeff;border:1px solid #bae6fd;border-radius:16px;padding:20px;box-shadow:0 10px 30px rgba(14,165,233,0.12);">
-        <h2 style="margin-top:0;font-size:20px;color:#075985;">FAQ Singkat</h2>
-        <dl style="margin:0;color:#075985;">
-            <dt style="font-weight:700;">Apakah Majelis.info menahan dana?</dt>
-            <dd style="margin:0 0 12px 0;">Tidak. Dana langsung masuk ke rekening panitia yang diverifikasi.</dd>
+            <!-- Tentang Kami Section -->
+            <section style="background: #f8fafc; padding: 30px; border-radius: 12px; margin: 30px 0;">
+                <h2 style="color: #1E3A8A; margin-bottom: 20px;">
+                    <span style="font-size: 1.5em;">ℹ️</span> Tentang Majelis.info
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                    <div>
+                        <h3 style="color: #334155; font-size: 1.1em;">Pengelola Platform</h3>
+                        <p style="color: #64748b;">
+                            <strong>Majelis.info</strong> adalah platform agregator jadwal kajian dan majelis ilmu di Indonesia.
+                            Kami menghubungkan jamaah dengan berbagai acara keislaman di seluruh nusantara.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 style="color: #334155; font-size: 1.1em;">Kontak Resmi</h3>
+                        <p style="color: #64748b; margin: 5px 0;">
+                            📍 Alamat: Jl. Guru Mughni No.27F, Jakarta
+                        </p>
+                        <p style="color: #64748b; margin: 5px 0;">
+                            📱 WhatsApp: <a href="https://wa.me/628999150143" style="color: #1E3A8A;">+62 899-9150-143</a>
+                        </p>
+                        <p style="color: #64748b; margin: 5px 0;">
+                            ✉️ Email: <a href="mailto:info@majelis.info" style="color: #1E3A8A;">info@majelis.info</a>
+                        </p>
+                    </div>
+                </div>
+            </section>
 
-            <dt style="font-weight:700;">Bagaimana melaporkan penipuan?</dt>
-            <dd style="margin:0 0 12px 0;">Segera email <a href="mailto:lapor@majelis.info">lapor@majelis.info</a> dengan bukti transfer, kami akan menandai event dan menghubungi panitia.</dd>
+            <!-- Sistem Donasi & Tiket -->
+            <section style="margin: 40px 0;">
+                <h2 style="color: #1E3A8A; margin-bottom: 20px;">
+                    <span style="font-size: 1.5em;">💳</span> Sistem Donasi & Tiket
+                </h2>
 
-            <dt style="font-weight:700;">Bisakah meminta refund tiket?</dt>
-            <dd style="margin:0;">Ikuti kebijakan yang tercantum di halaman event. Jika tidak ada, hubungi kontak panitia yang tertera.</dd>
-        </dl>
-    </section>
-</main>
+                <div style="background: white; border-left: 4px solid #3b82f6; padding: 20px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                    <h3 style="color: #334155; margin-top: 0;">Penting untuk Diketahui</h3>
+                    <p style="color: #64748b;">
+                        Majelis.info <strong>tidak mengelola dana donasi atau tiket secara langsung</strong>.
+                        Setiap event yang ditampilkan di platform kami dikelola oleh penyelenggara masing-masing.
+                    </p>
+                </div>
 
-<?php
-get_footer();
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px;">
+
+                    <div style="background: #fefce8; padding: 25px; border-radius: 10px; border: 2px solid #fde047;">
+                        <h3 style="color: #854d0e; font-size: 1.2em; margin-bottom: 15px;">
+                            📋 Alur Donasi/Tiket
+                        </h3>
+                        <ol style="color: #713f12; padding-left: 20px; line-height: 2;">
+                            <li>Pilih event yang ingin Anda ikuti</li>
+                            <li>Periksa detail rekening/metode pembayaran penyelenggara</li>
+                            <li>Transfer langsung ke rekening penyelenggara</li>
+                            <li>Simpan bukti transfer</li>
+                            <li>Konfirmasi ke kontak penyelenggara yang tertera</li>
+                        </ol>
+                    </div>
+
+                    <div style="background: #f0fdf4; padding: 25px; border-radius: 10px; border: 2px solid #86efac;">
+                        <h3 style="color: #14532d; font-size: 1.2em; margin-bottom: 15px;">
+                            ✅ Verifikasi Penyelenggara
+                        </h3>
+                        <p style="color: #166534; line-height: 1.8;">
+                            Kami melakukan verifikasi dasar terhadap penyelenggara event melalui:
+                        </p>
+                        <ul style="color: #166534; padding-left: 20px; line-height: 2;">
+                            <li>Validasi kontak dan lokasi</li>
+                            <li>Pengecekan riwayat event sebelumnya</li>
+                            <li>Konfirmasi identitas penyelenggara</li>
+                            <li>Review feedback jamaah</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: #fef2f2; padding: 25px; border-radius: 10px; border: 2px solid #fca5a5;">
+                        <h3 style="color: #7f1d1d; font-size: 1.2em; margin-bottom: 15px;">
+                            ⚠️ Tips Aman Berdonasi
+                        </h3>
+                        <ul style="color: #991b1b; padding-left: 20px; line-height: 2;">
+                            <li>Pastikan rekening atas nama penyelenggara/lembaga resmi</li>
+                            <li>Simpan bukti transfer dengan baik</li>
+                            <li>Konfirmasi ke nomor kontak resmi yang tertera</li>
+                            <li>Hati-hati dengan penipuan yang mengatasnamakan event</li>
+                            <li>Laporkan ke kami jika ada kecurigaan</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Pelaporan & Support -->
+            <section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 12px; margin: 40px 0; text-align: center;">
+                <h2 style="color: white; margin-bottom: 20px;">
+                    📢 Butuh Bantuan atau Ingin Melaporkan Masalah?
+                </h2>
+                <p style="font-size: 1.1em; margin-bottom: 25px; opacity: 0.95;">
+                    Kami berkomitmen untuk menjaga kepercayaan jamaah. Jika Anda menemukan hal yang mencurigakan atau butuh bantuan:
+                </p>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <a href="https://wa.me/628999150143"
+                       style="background: white; color: #667eea; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-block; transition: transform 0.2s;">
+                        📱 WhatsApp Support
+                    </a>
+                    <a href="mailto:info@majelis.info"
+                       style="background: rgba(255,255,255,0.2); color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-block; border: 2px solid white; transition: transform 0.2s;">
+                        ✉️ Email Kami
+                    </a>
+                </div>
+            </section>
+
+            <!-- FAQ -->
+            <section style="margin: 40px 0;">
+                <h2 style="color: #1E3A8A; margin-bottom: 25px; text-align: center;">
+                    ❓ Pertanyaan yang Sering Diajukan
+                </h2>
+
+                <div style="max-width: 800px; margin: 0 auto;">
+
+                    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 15px;">
+                        <h3 style="color: #334155; font-size: 1.1em; margin-bottom: 10px;">
+                            Apakah Majelis.info mengelola dana donasi?
+                        </h3>
+                        <p style="color: #64748b; margin: 0;">
+                            Tidak. Kami hanya platform agregator. Semua transaksi donasi/tiket dilakukan langsung antara jamaah dan penyelenggara event.
+                        </p>
+                    </div>
+
+                    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 15px;">
+                        <h3 style="color: #334155; font-size: 1.1em; margin-bottom: 10px;">
+                            Bagaimana jika saya merasa tertipu oleh penyelenggara?
+                        </h3>
+                        <p style="color: #64748b; margin: 0;">
+                            Segera laporkan ke kami melalui WhatsApp atau email. Kami akan menindaklanjuti dengan penghapusan event dan blacklist penyelenggara yang terbukti menipu.
+                        </p>
+                    </div>
+
+                    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 15px;">
+                        <h3 style="color: #334155; font-size: 1.1em; margin-bottom: 10px;">
+                            Apakah ada biaya untuk menggunakan platform Majelis.info?
+                        </h3>
+                        <p style="color: #64748b; margin: 0;">
+                            Tidak. Platform kami 100% gratis untuk jamaah. Kami juga tidak mengambil komisi dari transaksi donasi atau tiket.
+                        </p>
+                    </div>
+
+                    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 15px;">
+                        <h3 style="color: #334155; font-size: 1.1em; margin-bottom: 10px;">
+                            Bagaimana cara melaporkan event yang mencurigakan?
+                        </h3>
+                        <p style="color: #64748b; margin: 0;">
+                            Hubungi kami melalui WhatsApp di <a href="https://wa.me/628999150143" style="color: #1E3A8A;">+62 899-9150-143</a> atau email ke <a href="mailto:info@majelis.info" style="color: #1E3A8A;">info@majelis.info</a> dengan menyertakan bukti atau informasi lengkap.
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Komitmen Kami -->
+            <section style="background: #1E3A8A; color: white; padding: 40px; border-radius: 12px; margin: 40px 0;">
+                <h2 style="color: white; text-align: center; margin-bottom: 30px;">
+                    🤝 Komitmen Kami
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px;">
+
+                    <div style="text-align: center;">
+                        <div style="font-size: 3em; margin-bottom: 10px;">🔒</div>
+                        <h3 style="font-size: 1.1em; margin-bottom: 10px;">Keamanan</h3>
+                        <p style="opacity: 0.9; font-size: 0.95em;">
+                            Verifikasi penyelenggara dan monitoring event secara berkala
+                        </p>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <div style="font-size: 3em; margin-bottom: 10px;">👁️</div>
+                        <h3 style="font-size: 1.1em; margin-bottom: 10px;">Transparansi</h3>
+                        <p style="opacity: 0.9; font-size: 0.95em;">
+                            Informasi jelas tentang siapa kami dan bagaimana sistem bekerja
+                        </p>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <div style="font-size: 3em; margin-bottom: 10px;">⚡</div>
+                        <h3 style="font-size: 1.1em; margin-bottom: 10px;">Responsif</h3>
+                        <p style="opacity: 0.9; font-size: 0.95em;">
+                            Tim support siap membantu dan menindaklanjuti laporan
+                        </p>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <div style="font-size: 3em; margin-bottom: 10px;">💯</div>
+                        <h3 style="font-size: 1.1em; margin-bottom: 10px;">Gratis</h3>
+                        <p style="opacity: 0.9; font-size: 0.95em;">
+                            Tanpa biaya tersembunyi, tanpa komisi dari transaksi
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+
+    </article>
+
+    <?php endwhile; ?>
+
+</div>
+
+<?php get_footer(); ?>
