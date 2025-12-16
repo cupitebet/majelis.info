@@ -1024,3 +1024,323 @@ if ( ! function_exists( 'majelis_add_breadcrumb_schema' ) ) {
     }
     add_action( 'wp_head', 'majelis_add_breadcrumb_schema', 5 );
 }
+
+/**
+ * ========================================
+ * RATING & REVIEW SYSTEM (Goers-inspired)
+ * ========================================
+ */
+
+/**
+ * Add rating & review meta boxes
+ */
+if ( ! function_exists( 'majelis_add_review_metaboxes' ) ) {
+    function majelis_add_review_metaboxes() {
+        add_meta_box(
+            'event_reviews',
+            'Reviews & Ratings',
+            'majelis_render_reviews_metabox',
+            'mep_events',
+            'normal',
+            'default'
+        );
+    }
+    add_action( 'add_meta_boxes', 'majelis_add_review_metaboxes' );
+}
+
+/**
+ * Render reviews metabox (admin view only)
+ */
+function majelis_render_reviews_metabox( $post ) {
+    $average_rating = get_post_meta( $post->ID, '_event_rating_average', true );
+    $rating_count = get_post_meta( $post->ID, '_event_rating_count', true );
+
+    echo '<p><strong>Average Rating:</strong> ' . ( $average_rating ? number_format( $average_rating, 1 ) : 'No ratings yet' ) . '</p>';
+    echo '<p><strong>Total Reviews:</strong> ' . ( $rating_count ? $rating_count : '0' ) . '</p>';
+    echo '<p style="color: #666;"><em>Reviews are submitted by users on the frontend and cannot be edited here.</em></p>';
+}
+
+/**
+ * Register review custom post type
+ */
+if ( ! function_exists( 'majelis_register_review_post_type' ) ) {
+    function majelis_register_review_post_type() {
+        $args = array(
+            'public'              => false,
+            'show_ui'             => true,
+            'show_in_menu'        => 'edit.php?post_type=mep_events',
+            'capability_type'     => 'post',
+            'hierarchical'        => false,
+            'supports'            => array( 'title', 'editor', 'author' ),
+            'labels'              => array(
+                'name'               => 'Event Reviews',
+                'singular_name'      => 'Event Review',
+                'add_new'            => 'Add New Review',
+                'add_new_item'       => 'Add New Review',
+                'edit_item'          => 'Edit Review',
+                'view_item'          => 'View Review',
+                'search_items'       => 'Search Reviews',
+                'not_found'          => 'No reviews found',
+                'not_found_in_trash' => 'No reviews found in trash',
+            ),
+        );
+
+        register_post_type( 'event_review', $args );
+    }
+    add_action( 'init', 'majelis_register_review_post_type' );
+}
+
+/**
+ * AJAX handler: Submit review
+ */
+if ( ! function_exists( 'majelis_submit_review_ajax' ) ) {
+    function majelis_submit_review_ajax() {
+        // Verify nonce
+        if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'submit_review' ) ) {
+            wp_send_json_error( array( 'message' => 'Security check failed' ) );
+        }
+
+        // Get data
+        $event_id = intval( $_POST['event_id'] );
+        $rating = intval( $_POST['rating'] );
+        $review_text = sanitize_textarea_field( $_POST['review_text'] );
+        $reviewer_name = sanitize_text_field( $_POST['reviewer_name'] );
+        $reviewer_email = sanitize_email( $_POST['reviewer_email'] );
+
+        // Validate
+        if ( ! $event_id || $rating < 1 || $rating > 5 || empty( $review_text ) || strlen( $review_text ) < 50 ) {
+            wp_send_json_error( array( 'message' => 'Please provide valid rating and review (minimum 50 characters)' ) );
+        }
+
+        // Check if user already reviewed this event (by email)
+        $existing_reviews = get_posts( array(
+            'post_type'  => 'event_review',
+            'meta_query' => array(
+                'relation' => 'AND',
+                array(
+                    'key'   => '_event_id',
+                    'value' => $event_id,
+                ),
+                array(
+                    'key'   => '_reviewer_email',
+                    'value' => $reviewer_email,
+                ),
+            ),
+        ));
+
+        if ( ! empty( $existing_reviews ) ) {
+            wp_send_json_error( array( 'message' => 'You have already reviewed this event' ) );
+        }
+
+        // Create review post
+        $review_id = wp_insert_post( array(
+            'post_type'    => 'event_review',
+            'post_title'   => 'Review by ' . $reviewer_name . ' for Event #' . $event_id,
+            'post_content' => $review_text,
+            'post_status'  => 'pending', // Require moderation
+            'post_author'  => 0,
+        ));
+
+        if ( $review_id ) {
+            // Save meta data
+            update_post_meta( $review_id, '_event_id', $event_id );
+            update_post_meta( $review_id, '_rating', $rating );
+            update_post_meta( $review_id, '_reviewer_name', $reviewer_name );
+            update_post_meta( $review_id, '_reviewer_email', $reviewer_email );
+
+            // Update event rating
+            majelis_update_event_rating( $event_id );
+
+            wp_send_json_success( array( 'message' => 'Thank you! Your review is pending moderation.' ) );
+        } else {
+            wp_send_json_error( array( 'message' => 'Failed to submit review. Please try again.' ) );
+        }
+    }
+    add_action( 'wp_ajax_submit_review', 'majelis_submit_review_ajax' );
+    add_action( 'wp_ajax_nopriv_submit_review', 'majelis_submit_review_ajax' );
+}
+
+/**
+ * Update event rating average
+ */
+function majelis_update_event_rating( $event_id ) {
+    $reviews = get_posts( array(
+        'post_type'      => 'event_review',
+        'post_status'    => 'publish',
+        'posts_per_page' => -1,
+        'meta_query'     => array(
+            array(
+                'key'   => '_event_id',
+                'value' => $event_id,
+            ),
+        ),
+    ));
+
+    if ( empty( $reviews ) ) {
+        delete_post_meta( $event_id, '_event_rating_average' );
+        delete_post_meta( $event_id, '_event_rating_count' );
+        return;
+    }
+
+    $total_rating = 0;
+    foreach ( $reviews as $review ) {
+        $rating = get_post_meta( $review->ID, '_rating', true );
+        $total_rating += intval( $rating );
+    }
+
+    $average = $total_rating / count( $reviews );
+
+    update_post_meta( $event_id, '_event_rating_average', $average );
+    update_post_meta( $event_id, '_event_rating_count', count( $reviews ) );
+}
+
+/**
+ * Auto-update rating when review status changes
+ */
+add_action( 'transition_post_status', function( $new_status, $old_status, $post ) {
+    if ( $post->post_type === 'event_review' ) {
+        $event_id = get_post_meta( $post->ID, '_event_id', true );
+        if ( $event_id ) {
+            majelis_update_event_rating( $event_id );
+        }
+    }
+}, 10, 3 );
+
+/**
+ * ========================================
+ * AJAX HANDLERS FOR EVENT FILTERS (Goers-inspired)
+ * ========================================
+ */
+
+/**
+ * AJAX handler: Get events by time filter
+ */
+if ( ! function_exists( 'majelis_get_events_by_time_ajax' ) ) {
+    function majelis_get_events_by_time_ajax() {
+        $filter = isset( $_GET['filter'] ) ? sanitize_text_field( $_GET['filter'] ) : 'today';
+
+        // Set date range based on filter
+        switch ( $filter ) {
+            case 'today':
+                $start_date = date( 'Y-m-d 00:00:00' );
+                $end_date = date( 'Y-m-d 23:59:59' );
+                break;
+
+            case 'tomorrow':
+                $start_date = date( 'Y-m-d 00:00:00', strtotime( '+1 day' ) );
+                $end_date = date( 'Y-m-d 23:59:59', strtotime( '+1 day' ) );
+                break;
+
+            case 'week':
+                $start_date = date( 'Y-m-d 00:00:00' );
+                $end_date = date( 'Y-m-d 23:59:59', strtotime( '+7 days' ) );
+                break;
+
+            case 'all':
+            default:
+                $start_date = date( 'Y-m-d 00:00:00' );
+                $end_date = date( 'Y-m-d 23:59:59', strtotime( '+30 days' ) );
+                break;
+        }
+
+        // Query events
+        $args = array(
+            'post_type'      => 'mep_events',
+            'post_status'    => 'publish',
+            'posts_per_page' => 12,
+            'meta_key'       => 'event_start_datetime',
+            'orderby'        => 'meta_value',
+            'order'          => 'ASC',
+            'meta_query'     => array(
+                array(
+                    'key'     => 'event_start_datetime',
+                    'value'   => array( $start_date, $end_date ),
+                    'compare' => 'BETWEEN',
+                    'type'    => 'DATETIME',
+                ),
+            ),
+        );
+
+        $events = new WP_Query( $args );
+
+        ob_start();
+
+        if ( $events->have_posts() ) :
+            while ( $events->have_posts() ) : $events->the_post();
+                $event_id = get_the_ID();
+                $event_start = get_post_meta( $event_id, 'event_start_datetime', true );
+                $location = get_post_meta( $event_id, 'mep_location', true );
+                $ticket_price = get_post_meta( $event_id, 'mep_ticket_price', true );
+                $rating = get_post_meta( $event_id, '_event_rating_average', true );
+                $rating_count = get_post_meta( $event_id, '_event_rating_count', true );
+        ?>
+        <article class="event-card" style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s;">
+            <?php if ( has_post_thumbnail() ) : ?>
+            <div style="position: relative; height: 200px; overflow: hidden;">
+                <?php the_post_thumbnail( 'medium', array( 'style' => 'width: 100%; height: 100%; object-fit: cover;' ) ); ?>
+                <?php if ( $ticket_price ) : ?>
+                <div style="position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.95); padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85em; color: #16a34a;">
+                    <?php echo esc_html( $ticket_price ); ?>
+                </div>
+                <?php endif; ?>
+            </div>
+            <?php endif; ?>
+
+            <div style="padding: 20px;">
+                <h3 style="font-size: 1.2em; color: #1E3A8A; margin-bottom: 12px; line-height: 1.3;">
+                    <a href="<?php the_permalink(); ?>" style="text-decoration: none; color: inherit;">
+                        <?php the_title(); ?>
+                    </a>
+                </h3>
+
+                <?php if ( $event_start ) : ?>
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #64748b; font-size: 0.9em;">
+                    <span>⏰</span>
+                    <span><?php echo date_i18n( 'l, j M Y - H:i', strtotime( $event_start ) ); ?> WIB</span>
+                </div>
+                <?php endif; ?>
+
+                <?php if ( $location ) : ?>
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: #64748b; font-size: 0.9em;">
+                    <span>📍</span>
+                    <span><?php echo wp_trim_words( $location, 8 ); ?></span>
+                </div>
+                <?php endif; ?>
+
+                <?php if ( $rating && $rating_count ) : ?>
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px;">
+                    <div style="display: flex; gap: 2px;">
+                        <?php
+                        $full_stars = floor( $rating );
+                        for ( $i = 0; $i < 5; $i++ ) {
+                            echo $i < $full_stars ? '⭐' : '☆';
+                        }
+                        ?>
+                    </div>
+                    <span style="color: #64748b; font-size: 0.9em;">
+                        <?php echo number_format( $rating, 1 ); ?> (<?php echo $rating_count; ?> review)
+                    </span>
+                </div>
+                <?php endif; ?>
+
+                <a href="<?php the_permalink(); ?>"
+                   style="display: block; background: #1E3A8A; color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700; transition: background 0.2s;">
+                    Lihat Detail →
+                </a>
+            </div>
+        </article>
+        <?php
+            endwhile;
+            wp_reset_postdata();
+
+            $html = ob_get_clean();
+            wp_send_json_success( array( 'html' => $html ) );
+
+        else :
+            ob_get_clean();
+            wp_send_json_error( array( 'message' => 'No events found' ) );
+        endif;
+    }
+    add_action( 'wp_ajax_get_events_by_time', 'majelis_get_events_by_time_ajax' );
+    add_action( 'wp_ajax_nopriv_get_events_by_time', 'majelis_get_events_by_time_ajax' );
+}
