@@ -238,6 +238,14 @@ while ( have_posts() ) : the_post();
                 </div>
             </section>
 
+            <!-- Reviews & Rating Section (Goers-inspired) -->
+            <?php
+            // Include review component
+            if ( file_exists( get_stylesheet_directory() . '/partials/event-reviews.php' ) ) {
+                include get_stylesheet_directory() . '/partials/event-reviews.php';
+            }
+            ?>
+
         </div>
 
     </div>
