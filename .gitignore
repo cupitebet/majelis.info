@@ -95,6 +95,19 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+# PHP dependencies
+vendor/
+composer.lock
+
 # Build files
 dist/
 build/
+
+# WP-ENV
+.wp-env/
+.wp-env.override.json
+.wp-env.json.bak
+
+# Test artifacts
+.phpunit.result.cache
+coverage/

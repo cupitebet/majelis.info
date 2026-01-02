@@ -24,11 +24,55 @@ Repository ini berisi source code website majelis.info dengan integrasi GitHub u
 3. **Setup Auto-Deployment:**
    - Baca panduan lengkap di [DEPLOYMENT.md](DEPLOYMENT.md)
 
+## 🧰 Local Development (wp-env)
+
+Gunakan `@wordpress/env` agar lingkungan lokal konsisten dan terpisah dari produksi.
+
+### Prasyarat
+- Node.js 18+ dan npm
+- Docker Desktop (atau Docker Engine)
+
+### Menjalankan WordPress lokal
+```bash
+npx @wordpress/env start
+```
+
+Layanan lokal:
+- WordPress: http://localhost:8888
+- phpMyAdmin: http://localhost:8080
+
+### Menghentikan environment
+```bash
+npx @wordpress/env stop
+```
+
+### Reset database lokal (opsional)
+```bash
+npx @wordpress/env clean all
+```
+
+### Lokasi tema & plugin
+- Theme aktif: `wp-content/themes/meup-child`
+- Custom plugin (jika ada di masa depan): `wp-content/plugins/`
+
+### Lint PHP (manual)
+```bash
+find wp-content -name "*.php" -print0 | xargs -0 -n1 php -l
+```
+
+> Catatan: Database lokal terpisah dari produksi dan tidak menggunakan kredensial produksi.
+
+## 🧾 Coding Standards
+- PHP mengikuti WordPress Coding Standards (tab indent).
+- File konfigurasi mengikuti `.editorconfig`.
+
 ## 📁 Struktur Project
 
 ```
 majelis.info/
 ├── .github/workflows/     # GitHub Actions untuk auto-deploy
+├── .wp-env.json           # WordPress lokal via @wordpress/env
+├── .editorconfig          # Editor config linting dasar
 ├── DEPLOYMENT.md          # Panduan deployment lengkap
 ├── .gitignore            # File yang di-exclude dari Git
 └── README.md             # File ini
