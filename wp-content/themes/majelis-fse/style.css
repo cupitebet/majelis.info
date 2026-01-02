@@ -1,0 +1,23 @@
+/*
+Theme Name: Majelis FSE
+Theme URI: https://majelis.info
+Author: Majelis
+Description: Full Site Editing theme for Majelis events and organizer UX.
+Version: 0.1.0
+Text Domain: majelis-fse
+*/
+
+.majelis-event-map {
+	height: 320px;
+	margin-top: 1rem;
+}
+
+.majelis-event-share a {
+	margin-right: 1rem;
+}
+
+.majelis-event-filters {
+	display: grid;
+	gap: 0.75rem;
+	margin-bottom: 1.5rem;
+}

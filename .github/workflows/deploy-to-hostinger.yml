@@ -27,10 +27,10 @@ jobs:
       - name: Deploy Child Theme via FTPS (Encrypted)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ftp.majelis.info
+          server: ftp.staging.majelis.info
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /home/u362428227/domains/majelis.info/public_html/
+          server-dir: /home/u362428227/domains/staging.majelis.info/public_html/
           protocol: ftps
           port: 21
           exclude: |

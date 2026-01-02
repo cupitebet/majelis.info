@@ -36,6 +36,7 @@ wp-content/plugins/*
 !wp-content/plugins/.gitkeep
 # Jika ada custom plugin, uncomment:
 # !wp-content/plugins/my-custom-plugin/
+!wp-content/plugins/majelis-events/
 
 # WordPress THEMES - EXCLUDE parent themes
 wp-content/themes/twenty*/
@@ -95,6 +96,19 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+# PHP dependencies
+vendor/
+composer.lock
+
 # Build files
 dist/
 build/
+
+# WP-ENV
+.wp-env/
+.wp-env.override.json
+.wp-env.json.bak
+
+# Test artifacts
+.phpunit.result.cache
+coverage/
