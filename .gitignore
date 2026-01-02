@@ -36,6 +36,7 @@ wp-content/plugins/*
 !wp-content/plugins/.gitkeep
 # Jika ada custom plugin, uncomment:
 # !wp-content/plugins/my-custom-plugin/
+!wp-content/plugins/majelis-events/
 
 # WordPress THEMES - EXCLUDE parent themes
 wp-content/themes/twenty*/
