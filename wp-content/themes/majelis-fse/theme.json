@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "settings": {
+    "color": {
+      "palette": [
+        { "slug": "primary", "color": "#1c4a7e", "name": "Primary" },
+        { "slug": "secondary", "color": "#f4b400", "name": "Secondary" },
+        { "slug": "neutral", "color": "#f5f5f5", "name": "Neutral" },
+        { "slug": "dark", "color": "#1a1a1a", "name": "Dark" }
+      ]
+    },
+    "typography": {
+      "fontSizes": [
+        { "slug": "small", "size": "0.875rem", "name": "Small" },
+        { "slug": "medium", "size": "1rem", "name": "Medium" },
+        { "slug": "large", "size": "1.5rem", "name": "Large" },
+        { "slug": "x-large", "size": "2rem", "name": "Extra Large" }
+      ]
+    },
+    "spacing": {
+      "units": [ "px", "rem", "%" ]
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "#ffffff",
+      "text": "#1a1a1a"
+    },
+    "typography": {
+      "fontFamily": "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+    }
+  }
+}
