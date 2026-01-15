@@ -4,6 +4,118 @@ Dokumen ini adalah **plan + arahan teknis** untuk rebuild majelis.info ke **beta
 
 ---
 
+# Arahan Resmi ke Tim Dev: Majelis v2 di beta.majelis.info
+
+## Tujuan & Boundary
+
+- staging.majelis.info = WordPress maintenance (legacy).
+- beta.majelis.info = Majelis v2 clean (**NO WordPress**).
+- Production majelis.info **jangan disentuh**.
+- Rule keras: beta **tidak boleh** ada folder WP: `wp-admin/`, `wp-includes/`, `wp-content/`.
+
+## Struktur Environment (wajib dipahami)
+
+**Production root (jangan disentuh):**  
+`/home/u362428227/domains/majelis.info/public_html/`
+
+**Beta v2 root (target deploy v2):**  
+`/home/u362428227/domains/majelis.info/public_html/beta/`
+
+**Staging WP root:** sesuai setting Hostinger staging (khusus WP).
+
+## Repo & Branching (biar tidak campur aduk)
+
+**Opsi paling aman:** repo terpisah untuk v2 (mis. `majelis-v2`).
+
+**Branch utama:**
+
+- `beta` → selalu deploy ke `beta.majelis.info`
+- `main` → nanti untuk produksi v2 (belum aktif)
+
+**Yang harus dilakukan:**
+
+- Pindahkan / matikan semua workflow deploy WP dari repo v2.
+- Workflow WP hanya boleh ada di repo/branch legacy untuk staging WP.
+
+## Deployment SOP (beta v2)
+
+**Prinsip:**
+
+- Deploy beta hanya ketika secret guard **ON**.
+- Setelah deploy sukses → secret guard langsung **OFF**.
+
+**Secret yang wajib (beta):**
+
+- `FTP_SERVER_BETA`
+- `FTP_USERNAME_BETA`
+- `FTP_PASSWORD_BETA`
+- `ENABLE_BETA_DEPLOY` = default `false`
+
+**Sentinel file (verifikasi cepat):**
+
+- Buat file di repo v2: `.v2-deploy-sentinel.txt` berisi `v2 deploy ok`.
+- Checklist setelah deploy:
+  - File ada di `/public_html/beta/.v2-deploy-sentinel.txt`
+  - File **tidak** ada di production root.
+
+## Cara Deploy yang disarankan di Hostinger
+
+Karena shared hosting sering sulit untuk Node SSR:
+
+- **Frontend publik:** Next.js Static Export → upload ke `/public_html/beta/`.
+- **Backend API (CMS):**
+  - Paling rapi: `api-beta.majelis.info` (subdomain API).
+  - Alternatif: `/public_html/beta/api` (tergantung dukungan host).
+
+Tujuan MVP: event listing, event detail, map Leaflet, tombol WhatsApp.
+
+## Modul MVP (Sprint 1–3)
+
+**Sprint 1: Fondasi + Public Event**
+
+- DB schema minimal: `vendors`, `events`, `cities`, `categories`, `media`
+- API publik: `GET /events`, `GET /events/{slug}`
+- Frontend: listing event, detail event + Leaflet
+- SEO: slug stable, canonical, JSON-LD Event, sitemap minimal
+
+**Sprint 2: Vendor Dashboard**
+
+- Auth + role: `admin`, `vendor`
+- Vendor CRUD event milik sendiri
+- Set lokasi via map picker (Leaflet)
+- Ticket types CRUD
+
+**Sprint 3: Ticket via WhatsApp (tanpa WA API)**
+
+- UI pilih tiket + qty
+- `POST /order-intents`
+- Redirect `wa.me` dengan template pesan
+- Tracking minimal status `wa_clicked`
+- Vendor dashboard: total leads per event
+
+## Definition of Done (DoD) Beta v2
+
+- Deploy ke `beta.majelis.info`
+- **Tidak ada** jejak WP di beta root
+- **Tidak ada** Google Maps scripts
+- Page speed masuk akal (frontend ringan)
+- Endpoint terdokumentasi (Postman/Swagger minimal)
+- Ada sentinel file verifikasi deploy
+
+## Output yang harus dikumpulkan tim dev
+
+1. ERD ringkas + migrations
+2. Spec API (Postman collection atau OpenAPI)
+3. URL beta yang bisa dites
+4. Checklist SEO (canonical, schema, sitemap)
+5. Dokumen SOP deploy beta (guard + sentinel)
+
+## Pesan singkat (broadcast ke grup)
+
+“Team, mulai hari ini: staging = WP, beta = v2 clean. Beta tidak boleh ada folder WP. Deploy beta hanya dari branch beta dengan secret ENABLE_BETA_DEPLOY=true, setelah deploy langsung OFF. Target path beta: /public_html/beta/. Pakai sentinel .v2-deploy-sentinel.txt buat verifikasi.”
+
+---
+
 # Plan Rebuild Majelis.info v2 (Beta First)
 
 ## Tujuan

@@ -18,7 +18,6 @@ jobs:
   deploy:
     name: Deploy Child Theme via FTPS
     # To enable FTPS beta deploys, set ENABLE_BETA_DEPLOY=true.
-    # To enable deploys, set repository secret ENABLE_BETA_DEPLOY=true.
     if: ${{ github.ref == 'refs/heads/beta' && secrets.ENABLE_BETA_DEPLOY == 'true' }}
     runs-on: ubuntu-latest
 
