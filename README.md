@@ -52,6 +52,27 @@ Membangun ulang majelis.info dengan arsitektur yang:
 5. Verifikasi hanya `/public_html/beta/` yang berubah (beta.majelis.info), production tetap aman.
 6. Setelah test, set `ENABLE_BETA_DEPLOY=false` lagi.
 
+### Mode Operasional (Broadcast ke Tim)
+
+**Default (sehari-hari)**
+
+- `ENABLE_BETA_DEPLOY`: `false` / tidak ada
+- `ENABLE_BETA_DEPLOY_FTP_BACKUP`: `false` / tidak ada
+- Deploy tidak jalan walaupun push ke `beta`.
+
+**Deploy beta normal (FTPS)**
+
+1. Set `ENABLE_BETA_DEPLOY=true`.
+2. Push perubahan ke `beta` (path yang match workflow).
+3. Setelah deploy selesai → set `ENABLE_BETA_DEPLOY=false`.
+
+**Darurat: FTP backup (jika FTPS bermasalah)**
+
+1. Set `ENABLE_BETA_DEPLOY=true`.
+2. Set `ENABLE_BETA_DEPLOY_FTP_BACKUP=true`.
+3. Jalankan workflow backup (atau push perubahan).
+4. Setelah selesai → set kedua secret kembali `false`.
+
 ### Sentinel File (Verifikasi Cepat)
 
 - File sentinel: `wp-content/themes/meup-child/.beta-deploy-sentinel.txt` (isi: `beta deploy ok`).
