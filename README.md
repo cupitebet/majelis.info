@@ -31,6 +31,7 @@ Membangun ulang majelis.info dengan arsitektur yang:
 - Jangan gunakan credential/remote path production untuk beta.
 - Production root: `/home/u362428227/domains/majelis.info/public_html/` → **jangan disentuh**.
 - Workflow deploy saat ini **legacy WordPress (child theme)** untuk maintenance beta saja, bukan pipeline v2 (Laravel/Next).
+- FTPS adalah default; workflow FTP backup hanya untuk kondisi darurat.
 
 ### SOP Secrets (Default OFF)
 
@@ -39,6 +40,7 @@ Membangun ulang majelis.info dengan arsitektur yang:
   - `FTP_SERVER_BETA`
   - `FTP_USERNAME_BETA`
   - `FTP_PASSWORD_BETA`
+- Untuk workflow FTP backup darurat, gunakan secret tambahan `ENABLE_BETA_DEPLOY_FTP_BACKUP=true` agar tidak aktif tanpa sengaja.
 - Gunakan secrets `_BETA` meskipun servernya sama.
 
 ### SOP Uji Deploy Pertama (Safe Test)
@@ -49,6 +51,14 @@ Membangun ulang majelis.info dengan arsitektur yang:
 4. Push perubahan kecil lagi → deploy **harus jalan**.
 5. Verifikasi hanya `/public_html/beta/` yang berubah (beta.majelis.info), production tetap aman.
 6. Setelah test, set `ENABLE_BETA_DEPLOY=false` lagi.
+
+### Sentinel File (Verifikasi Cepat)
+
+- File sentinel: `wp-content/themes/meup-child/.beta-deploy-sentinel.txt` (isi: `beta deploy ok`).
+- Setelah deploy, file harus ada di:
+  `/public_html/beta/wp-content/themes/meup-child/.beta-deploy-sentinel.txt`
+- File **tidak** boleh muncul di:
+  `/public_html/wp-content/themes/meup-child/.beta-deploy-sentinel.txt`
 
 ---
 
