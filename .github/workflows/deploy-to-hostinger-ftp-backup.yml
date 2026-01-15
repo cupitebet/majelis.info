@@ -16,6 +16,7 @@ on:
 jobs:
   deploy:
     name: Deploy Child Theme via FTP
+    # To enable FTP backup deploys, set ENABLE_BETA_DEPLOY=true AND ENABLE_BETA_DEPLOY_FTP_BACKUP=true.
     # To enable deploys, set repository secret ENABLE_BETA_DEPLOY=true.
     if: ${{ github.ref == 'refs/heads/beta' && secrets.ENABLE_BETA_DEPLOY == 'true' && secrets.ENABLE_BETA_DEPLOY_FTP_BACKUP == 'true' }}
     runs-on: ubuntu-latest

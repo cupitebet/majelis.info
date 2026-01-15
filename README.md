@@ -65,6 +65,7 @@ Membangun ulang majelis.info dengan arsitektur yang:
 1. Set `ENABLE_BETA_DEPLOY=true`.
 2. Push perubahan ke `beta` (path yang match workflow).
 3. Setelah deploy selesai → set `ENABLE_BETA_DEPLOY=false`.
+4. **Rule:** “Secret ON hanya saat mau deploy, setelah sukses langsung OFF.”
 
 **Darurat: FTP backup (jika FTPS bermasalah)**
 
