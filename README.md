@@ -58,6 +58,15 @@ Dokumen ini adalah **plan + arahan teknis** untuk rebuild majelis.info ke **beta
   - File ada di `/public_html/beta/.v2-deploy-sentinel.txt`
   - File **tidak** ada di production root.
 
+**Checklist verifikasi cepat (setelah deploy):**
+
+- Buka `https://beta.majelis.info/.v2-deploy-sentinel.txt` → harus tampil `v2 deploy ok`.
+- Pastikan **tidak ada** WordPress:
+  - `https://beta.majelis.info/wp-login.php` → 404
+  - `https://beta.majelis.info/wp-admin/` → 404
+- Pastikan staging WP aman:
+  - `https://staging.majelis.info/wp-login.php` → normal (WP legacy tetap hidup).
+
 ## Cara Deploy yang disarankan di Hostinger
 
 Karena shared hosting sering sulit untuk Node SSR:
