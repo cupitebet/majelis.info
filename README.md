@@ -29,6 +29,26 @@ Membangun ulang majelis.info dengan arsitektur yang:
 - Deployment hanya boleh dari branch `beta` ke subdomain `beta.majelis.info`.
 - Deploy target beta harus ke `/home/u362428227/domains/majelis.info/public_html/beta/`.
 - Jangan gunakan credential/remote path production untuk beta.
+- Production root: `/home/u362428227/domains/majelis.info/public_html/` → **jangan disentuh**.
+- Workflow deploy saat ini **legacy WordPress (child theme)** untuk maintenance beta saja, bukan pipeline v2 (Laravel/Next).
+
+### SOP Secrets (Default OFF)
+
+- Jangan buat secret `ENABLE_BETA_DEPLOY` dulu, atau set ke `"false"`.
+- Secrets yang wajib ada sebelum uji deploy beta:
+  - `FTP_SERVER_BETA`
+  - `FTP_USERNAME_BETA`
+  - `FTP_PASSWORD_BETA`
+- Gunakan secrets `_BETA` meskipun servernya sama.
+
+### SOP Uji Deploy Pertama (Safe Test)
+
+1. Pastikan `ENABLE_BETA_DEPLOY` **OFF** (tidak ada / `false`).
+2. Push perubahan kecil di branch `beta` yang memicu workflow → job **harus skipped**.
+3. Set `ENABLE_BETA_DEPLOY=true`.
+4. Push perubahan kecil lagi → deploy **harus jalan**.
+5. Verifikasi hanya `/public_html/beta/` yang berubah (beta.majelis.info), production tetap aman.
+6. Setelah test, set `ENABLE_BETA_DEPLOY=false` lagi.
 
 ---
 
