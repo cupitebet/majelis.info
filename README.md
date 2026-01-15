@@ -1,191 +1,389 @@
-# majelis.info
+# Rebuild Majelis.info v2 (Beta First)
 
-Website repository untuk **majelis.info** yang di-hosting di Hostinger.
-
-## 🌐 Tentang
-
-Repository ini berisi source code website majelis.info dengan integrasi GitHub untuk version control dan auto-deployment ke Hostinger.
-
-## 🚀 Quick Start
-
-### Setup Awal
-
-1. **Clone repository ini:**
-   ```bash
-   git clone git@github.com:cupitebet/majelis.info.git
-   cd majelis.info
-   ```
-
-2. **Upload file website dari Hostinger:**
-   - Download file dari Hostinger (via FTP/SSH/File Manager)
-   - Copy semua file ke repository ini
-   - Commit dan push
-
-3. **Setup Auto-Deployment:**
-   - Baca panduan lengkap di [DEPLOYMENT.md](DEPLOYMENT.md)
-
-## 📁 Struktur Project
-
-```
-majelis.info/
-├── .github/workflows/     # GitHub Actions untuk auto-deploy
-├── DEPLOYMENT.md          # Panduan deployment lengkap
-├── .gitignore            # File yang di-exclude dari Git
-└── README.md             # File ini
-```
-
-## 🔄 Workflow Development
-
-```bash
-# 1. Buat perubahan
-git checkout -b feature/nama-fitur
-
-# 2. Commit perubahan
-git add .
-git commit -m "Add: deskripsi perubahan"
-
-# 3. Push ke GitHub
-git push origin feature/nama-fitur
-
-# 4. Merge ke main untuk auto-deploy ke Hostinger
-```
-
-## 📚 Dokumentasi Lengkap
-
-### 🚀 Getting Started
-- [QUICK-START.md](QUICK-START.md) - **START HERE!** Panduan cepat upload website
-- [DEPLOYMENT.md](DEPLOYMENT.md) - Setup Hostinger ↔️ GitHub integration
-- [COMPLETENESS-REPORT.md](COMPLETENESS-REPORT.md) - Status kelengkapan website
-
-### 📋 Project Planning (NEW!)
-- [DEVELOPMENT-ROADMAP.md](DEVELOPMENT-ROADMAP.md) - **16-week complete implementation plan**
-- [MEUP-OPTIMIZATION-PLAN.md](MEUP-OPTIMIZATION-PLAN.md) - MeUp theme optimization guide
-- [MOBILE-APP-PLAN.md](MOBILE-APP-PLAN.md) - Mobile app development guide (Flutter)
-- [DESIGN-IMPROVEMENTS.md](DESIGN-IMPROVEMENTS.md) - Design enhancement guide
-
-### 💻 Development & Editing
-- [DEVELOPMENT-GUIDE.md](DEVELOPMENT-GUIDE.md) - **Cara edit & optimize website**
-- [COMMIT-LARGE-FOLDERS.md](COMMIT-LARGE-FOLDERS.md) - Commit folder WordPress yang besar
-
-### 🔒 Security
-- [SECURITY-AUDIT.md](SECURITY-AUDIT.md) - **PENTING! Baca ini untuk keamanan**
-
-### 🔧 Helper Tools
-- [commit-wordpress.sh](commit-wordpress.sh) - Script otomatis untuk commit bertahap
-
-### 📖 External Resources
-- [Hostinger Tutorials](https://www.hostinger.com/tutorials/)
-- [WordPress Codex](https://codex.wordpress.org/)
-- [GitHub Docs](https://docs.github.com/)
-
-## 🔧 Setup Required
-
-### GitHub Secrets (untuk auto-deployment via FTP)
-
-Tambahkan secrets di GitHub repository settings:
-
-1. `FTP_SERVER` - FTP server Hostinger (contoh: `ftp.majelis.info`)
-2. `FTP_USERNAME` - Username FTP Anda
-3. `FTP_PASSWORD` - Password FTP Anda
-
-**Cara menambahkan:**
-- GitHub Repository → Settings → Secrets and variables → Actions
-- Klik "New repository secret"
-- Tambahkan ketiga secrets di atas
-
-## ✅ Setup Progress
-
-### Completed ✅
-- [x] Repository setup & initialization
-- [x] SSH Key ditambahkan ke GitHub
-- [x] .gitignore configured (protect sensitive files)
-- [x] GitHub Actions workflow ready
-- [x] Security audit completed
-- [x] Documentation lengkap dibuat
-- [x] Helper scripts dibuat
-
-### Pending ⏳
-- [ ] **Upload folder WordPress** (wp-admin, wp-includes, wp-content)
-- [ ] **Change database password** (CRITICAL - credentials exposed)
-- [ ] Setup FTP secrets di GitHub (untuk auto-deployment)
-- [ ] Test auto-deployment
-- [ ] (Optional) Clean Git history
-
-### Current Status: 📊
-```
-WordPress Files:  25% (hanya root files)
-Documentation:   100% ✅
-Security:         75% (perlu ganti password)
-Ready to Deploy:  50% (perlu upload folder)
-```
-
-## 🎯 Next Steps - Langkah Selanjutnya
-
-### 1. 🔒 CRITICAL: Change Database Password
-**⚠️ PRIORITAS TINGGI!** Database credentials exposed di Git history.
-
-**Action:**
-1. Login ke Hostinger hPanel
-2. Databases → MySQL Databases
-3. Find `u362428227_XCgMd` → Change Password
-4. Update wp-config.php di server dengan password baru
-5. ✅ Read: [SECURITY-AUDIT.md](SECURITY-AUDIT.md)
-
-### 2. 📦 Upload WordPress Folders
-Website belum lengkap! Perlu upload 3 folder penting:
-
-**Action:**
-1. Download dari Hostinger (FTP/File Manager)
-   - wp-admin/
-   - wp-includes/
-   - wp-content/
-2. Copy ke repository ini
-3. Run: `./commit-wordpress.sh`
-4. ✅ Read: [QUICK-START.md](QUICK-START.md)
-
-### 3. 🚀 Setup Auto-Deployment (Optional)
-**Action:**
-1. Add GitHub Secrets (FTP credentials)
-2. Test GitHub Actions workflow
-3. ✅ Read: [DEPLOYMENT.md](DEPLOYMENT.md)
-
-### 4. 💻 Start Editing & Optimizing
-**Setelah upload selesai, Anda bisa:**
-- Edit via GitHub web interface
-- Edit via local Git clone
-- Use Claude Code untuk AI-assisted editing
-- ✅ Read: [DEVELOPMENT-GUIDE.md](DEVELOPMENT-GUIDE.md)
+Dokumen ini adalah **plan + arahan teknis** untuk rebuild majelis.info ke **beta.majelis.info** dengan **CMS clean**, **vendor dashboard**, **ticket via WhatsApp**, dan **tanpa paid API**.
 
 ---
 
-## 🆘 Bantuan & Support
+# Plan Rebuild Majelis.info v2 (Beta First)
 
-### Dokumentasi
-1. [SECURITY-AUDIT.md](SECURITY-AUDIT.md) - Security issues & fixes
-2. [QUICK-START.md](QUICK-START.md) - Getting started guide
-3. [DEVELOPMENT-GUIDE.md](DEVELOPMENT-GUIDE.md) - Edit & optimize website
-4. [DEPLOYMENT.md](DEPLOYMENT.md) - Deployment troubleshooting
+## Tujuan
 
-### Troubleshooting
-- GitHub Actions logs untuk deployment errors
-- Hostinger error logs via hPanel
-- Check [COMMIT-LARGE-FOLDERS.md](COMMIT-LARGE-FOLDERS.md) untuk upload issues
+Membangun ulang majelis.info dengan arsitektur yang:
 
-### Contact
-- GitHub Issues: Report bugs atau tanya
-- Claude Code: Ask me anything!
+* **Clean** (schema rapi, bukan meta soup)
+* **Cepat & SEO-ready**
+* **Vendor bisa input event sendiri**
+* **Tiket via WhatsApp** (tanpa WhatsApp API)
+* **Tanpa paid API** (Maps pakai Leaflet + OSM; search self-host nanti)
 
----
+## Scope awal
 
-## 📊 Repository Stats
-
-- **Total Documentation:** 11 comprehensive guides (22,000+ words)
-- **Project Planning:** ✅ Complete (4 new detailed guides)
-- **Security Level:** 75% (needs password change)
-- **Completeness:** 25% (needs WordPress folders)
-- **Ready for Development:** ✅ Yes - Full roadmap available
+* Build di **beta.majelis.info**
+* Fokus parity fitur inti + fondasi future (ticketing & vendor)
 
 ---
 
-**Live Website:** https://majelis.info
-**Repository:** https://github.com/cupitebet/majelis.info
+## Deployment Safety (IMPORTANT)
+
+- Auto-deploy ke production (majelis.info) **DISABLED**.
+- Deployment hanya boleh dari branch `beta` ke subdomain `beta.majelis.info`.
+- Deploy target beta harus ke `/home/u362428227/domains/majelis.info/public_html/beta/`.
+- Jangan gunakan credential/remote path production untuk beta.
+- Production root: `/home/u362428227/domains/majelis.info/public_html/` → **jangan disentuh**.
+- Workflow deploy saat ini **legacy WordPress (child theme)** untuk maintenance beta saja, bukan pipeline v2 (Laravel/Next).
+- FTPS adalah default; workflow FTP backup hanya untuk kondisi darurat.
+
+### SOP Secrets (Default OFF)
+
+- Jangan buat secret `ENABLE_BETA_DEPLOY` dulu, atau set ke `"false"`.
+- Secrets yang wajib ada sebelum uji deploy beta:
+  - `FTP_SERVER_BETA`
+  - `FTP_USERNAME_BETA`
+  - `FTP_PASSWORD_BETA`
+- Untuk workflow FTP backup darurat, gunakan secret tambahan `ENABLE_BETA_DEPLOY_FTP_BACKUP=true` agar tidak aktif tanpa sengaja.
+- Gunakan secrets `_BETA` meskipun servernya sama.
+
+### SOP Uji Deploy Pertama (Safe Test)
+
+1. Pastikan `ENABLE_BETA_DEPLOY` **OFF** (tidak ada / `false`).
+2. Push perubahan kecil di branch `beta` yang memicu workflow → job **harus skipped**.
+3. Set `ENABLE_BETA_DEPLOY=true`.
+4. Push perubahan kecil lagi → deploy **harus jalan**.
+5. Verifikasi hanya `/public_html/beta/` yang berubah (beta.majelis.info), production tetap aman.
+6. Setelah test, set `ENABLE_BETA_DEPLOY=false` lagi.
+
+### Mode Operasional (Broadcast ke Tim)
+
+**Default (sehari-hari)**
+
+- `ENABLE_BETA_DEPLOY`: `false` / tidak ada
+- `ENABLE_BETA_DEPLOY_FTP_BACKUP`: `false` / tidak ada
+- Deploy tidak jalan walaupun push ke `beta`.
+
+**Deploy beta normal (FTPS)**
+
+1. Set `ENABLE_BETA_DEPLOY=true`.
+2. Push perubahan ke `beta` (path yang match workflow).
+3. Setelah deploy selesai → set `ENABLE_BETA_DEPLOY=false`.
+
+**Darurat: FTP backup (jika FTPS bermasalah)**
+
+1. Set `ENABLE_BETA_DEPLOY=true`.
+2. Set `ENABLE_BETA_DEPLOY_FTP_BACKUP=true`.
+3. Jalankan workflow backup (atau push perubahan).
+4. Setelah selesai → set kedua secret kembali `false`.
+
+### Sentinel File (Verifikasi Cepat)
+
+- File sentinel: `wp-content/themes/meup-child/.beta-deploy-sentinel.txt` (isi: `beta deploy ok`).
+- Setelah deploy, file harus ada di:
+  `/public_html/beta/wp-content/themes/meup-child/.beta-deploy-sentinel.txt`
+- File **tidak** boleh muncul di:
+  `/public_html/wp-content/themes/meup-child/.beta-deploy-sentinel.txt`
+
+---
+
+# Keputusan Arsitektur
+
+## Stack
+
+**Backend (CMS + API)**
+
+* Laravel (PHP 8.2+)
+* PostgreSQL
+* Auth: Laravel Sanctum
+* Role/permission: Spatie Permission
+* Storage: local (beta), opsi MinIO nanti
+
+**Frontend publik**
+
+* Next.js (TypeScript)
+* SSG/ISR untuk halaman statis, SSR opsional untuk search berat
+
+**Maps**
+
+* Leaflet + OpenStreetMap tiles
+* **No Google Maps**, no paid map API
+* Geocode: **tidak otomatis**. Admin/vendor set pin manual (lat/lng).
+
+**Search**
+
+* MVP: query Postgres (indexing bagus)
+* Fase 2: Meilisearch self-host (jika data sudah banyak)
+
+---
+
+# Modul & Fitur: MVP Beta
+
+## 1) Publik: Direktori Event
+
+**Pages**
+
+* Home / listing event
+* Event detail
+* Listing by kategori/kota
+* Sitemap + robots
+
+**Fitur**
+
+* Filter: keyword, kota, kategori, tanggal range (minimal start date)
+* Event detail: info lengkap + peta Leaflet marker
+
+**Acceptance Criteria**
+
+* LCP bagus (target internal: cepat dan ringan, no heavy scripts)
+* JSON-LD schema Event valid di event detail
+* Tidak ada script Google Maps kebawa
+
+---
+
+## 2) Vendor Dashboard (CMS khusus vendor)
+
+**Role**
+
+* `admin`, `editor`, `vendor`
+
+**Vendor bisa**
+
+* Kelola profil vendor (nama, no WA, logo)
+* CRUD event (draft/publish)
+* Set lokasi via map picker (lat/lng)
+* Buat ticket type (nama, harga, kuota, periode jual)
+* Lihat statistik sederhana: jumlah klik “Pesan via WA” (leads)
+
+**Acceptance Criteria**
+
+* Vendor hanya bisa mengedit event miliknya
+* Admin bisa melihat dan mengedit semua
+* Status event: `draft` / `published`
+
+---
+
+## 3) Ticketing MVP: Pesan via WhatsApp (tanpa WhatsApp API)
+
+**Konsep**
+
+* Tidak ada checkout, tidak ada payment gateway di fase beta.
+* Tombol “Pesan via WhatsApp” membuat link `wa.me` ke nomor vendor, dengan template pesan otomatis.
+
+**Flow**
+
+1. User pilih jenis tiket + qty (di event detail)
+2. Klik “Pesan via WhatsApp”
+3. Sistem:
+
+   * simpan record `order_intents`
+   * redirect ke link `wa.me` (template pesan)
+
+**Acceptance Criteria**
+
+* Template pesan terisi: nama event, tanggal, ticket type, qty, nama/HP (optional), lokasi
+* Ada pencatatan lead minimal: `order_intents.status = wa_clicked`
+* Tidak perlu integrasi WA Business API
+
+---
+
+# Future Roadmap (Disiapkan dari Skema)
+
+## Phase B: Invoice + Upload bukti bayar (masih tanpa gateway)
+
+* Generate invoice number
+* User upload bukti transfer / QRIS statis vendor
+* Vendor/admin approve → generate ticket code/QR
+
+## Phase C: Payment otomatis (opsional)
+
+* Integrasi payment gateway (kalau sudah validasi demand)
+* Catatan: ini bukan “bayar API mahal”, biasanya fee per transaksi.
+
+---
+
+# Data Model (Minimal, Clean)
+
+## Tabel inti
+
+### `vendors`
+
+* id, name, whatsapp_number, description, logo_media_id, status, created_at
+
+### `events`
+
+* id
+* vendor_id
+* title, slug
+* status: draft/published
+* start_at, end_at
+* description
+* address_text
+* city_id, province_id
+* latitude, longitude
+* cover_media_id
+* seo_title, seo_description, canonical_url
+* published_at, created_by, updated_by
+* timestamps
+
+### `ticket_types`
+
+* id, event_id
+* name
+* price (integer)
+* quota (integer)
+* sold_count (integer default 0)
+* sales_start, sales_end (nullable)
+* timestamps
+
+### `order_intents` (MVP WA)
+
+* id
+* event_id, ticket_type_id, vendor_id
+* qty
+* buyer_name (nullable)
+* buyer_phone (nullable)
+* status: initiated/wa_clicked/closed
+* user_agent, referrer (optional, untuk analitik ringan)
+* timestamps
+
+### taxonomy (minimal)
+
+* `categories`, `event_categories` (pivot)
+* `tags`, `event_tags` (pivot)
+* `cities`, `provinces`
+
+### SEO util
+
+* `redirects`: from_path, to_path, status_code, hits_count
+
+### `media`
+
+* id, path, mime, width, height, alt_text, created_by, timestamps
+
+---
+
+# API Contract (Disepakati dari awal)
+
+## Public API
+
+* `GET /api/events?query=&city=&category=&date_from=&date_to=&page=`
+* `GET /api/events/{slug}`
+* `GET /api/categories`
+* `GET /api/cities`
+* `POST /api/order-intents` (buat record sebelum redirect WA)
+
+## Vendor/Admin API (protected)
+
+* `POST /api/auth/login`
+* `GET /api/vendor/me`
+* `POST /api/vendor/events`
+* `PUT /api/vendor/events/{id}`
+* `POST /api/vendor/ticket-types`
+* `PUT /api/vendor/ticket-types/{id}`
+* `POST /api/media`
+
+---
+
+# Sprint Plan (Beta)
+
+## Sprint 1: Foundation + Event Public
+
+**Backend**
+
+* Setup Laravel + Postgres + migrations inti (vendors, events, media, cities/provinces)
+* Auth + RBAC (admin/vendor)
+* CRUD event minimal (title, date, address, lat/lng, status)
+
+**Frontend**
+
+* Listing event
+* Event detail + Leaflet map (marker)
+* Basic SEO: slug + canonical + JSON-LD Event
+
+**DoD**
+
+* beta.majelis.info deploy
+* Event detail sudah ada map Leaflet
+* Tidak ada Google scripts
+
+---
+
+## Sprint 2: Vendor Dashboard + Ticket Types
+
+**Backend**
+
+* Vendor profile + limit akses data milik sendiri
+* Ticket types CRUD
+* Publish workflow: draft/publish
+
+**Frontend**
+
+* Vendor dashboard UI minimal (bisa internal Next atau blade admin, tapi konsisten)
+* Event create/edit + map picker (Leaflet)
+
+**DoD**
+
+* Vendor bisa create event + set lat/lng
+* Ticket types muncul di event detail
+
+---
+
+## Sprint 3: WhatsApp Order Intents + Tracking
+
+**Backend**
+
+* `order_intents` endpoint + status update
+* Rate limit sederhana (anti spam)
+
+**Frontend**
+
+* UI pilih tiket + qty
+* Tombol “Pesan via WhatsApp”
+* Redirect ke `wa.me` dengan template pesan
+
+**DoD**
+
+* Setiap klik tercatat sebagai lead
+* Vendor bisa lihat count lead per event
+
+---
+
+# Arahan Teknis Kunci (biar tim tidak salah arah)
+
+## Maps
+
+* Leaflet only.
+* Lat/lng wajib disimpan di kolom `events.latitude/longitude`
+* Tidak ada geocode otomatis di MVP.
+
+## SEO
+
+* Slug stable
+* Canonical selalu ada
+* JSON-LD Event wajib di detail
+* Sitemap generator minimal (events + kategori) pada beta
+
+## Performance
+
+* Hindari bundle besar di frontend
+* Caching:
+
+  * public pages: ISR/SSG kalau memungkinkan
+  * API: response cache (opsional)
+
+## Security & Roles
+
+* Vendor hanya akses datanya
+* Admin override semua
+* Audit log minimal (optional sprint 2/3)
+
+---
+
+# Deliverables yang harus diminta dari tim dev (output nyata)
+
+1. Dokumen schema DB (ERD ringkas)
+2. Spec API (OpenAPI/Swagger atau minimal Postman collection)
+3. URL beta yang bisa di-test
+4. Checklist SEO teknis (canonical, schema, sitemap)
+5. Daftar endpoint + contoh response
+
+---
+
+Kalau dibutuhkan, bisa dibuat **Jira epics + user stories + acceptance criteria** dalam format siap import (Epic → Story → Subtask).
