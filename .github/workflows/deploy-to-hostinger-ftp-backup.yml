@@ -1,4 +1,4 @@
-name: Deploy Child Theme to Hostinger
+name: Deploy Child Theme to Hostinger (FTP Backup)
 
 # Deploy ONLY meup-child theme + custom files
 # WordPress core & plugins are NOT deployed
@@ -6,7 +6,7 @@ name: Deploy Child Theme to Hostinger
 on:
   push:
     branches:
-      - main
+      - beta
     paths:
       - 'wp-content/themes/meup-child/**'
       - 'majelis-*.css'
@@ -16,6 +16,8 @@ on:
 jobs:
   deploy:
     name: Deploy Child Theme via FTP
+    # To enable deploys, set repository secret ENABLE_BETA_DEPLOY=true.
+    if: ${{ github.ref == 'refs/heads/beta' && secrets.ENABLE_BETA_DEPLOY == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -25,10 +27,10 @@ jobs:
       - name: Deploy Child Theme via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ftp.majelis.info
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /home/u362428227/domains/majelis.info/public_html/
+          server: ${{ secrets.FTP_SERVER_BETA }}
+          username: ${{ secrets.FTP_USERNAME_BETA }}
+          password: ${{ secrets.FTP_PASSWORD_BETA }}
+          server-dir: /home/u362428227/domains/majelis.info/public_html/beta/
           protocol: ftp
           port: 21
           exclude: |
