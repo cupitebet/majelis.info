@@ -36,6 +36,7 @@ Dokumen ini adalah **plan + arahan teknis** untuk rebuild majelis.info ke **beta
 
 - Workflow deploy WP **dipensiunkan** dari repo v2.
 - Workflow WP hanya boleh ada di repo/branch legacy untuk staging WP.
+- Repo ini hanya untuk v2; jangan campur asset WP atau pipeline WP.
 
 ## Deployment SOP (beta v2)
 
@@ -71,10 +72,12 @@ Dokumen ini adalah **plan + arahan teknis** untuk rebuild majelis.info ke **beta
 
 Karena shared hosting sering sulit untuk Node SSR:
 
-- **Frontend publik:** Next.js Static Export → upload ke `/public_html/beta/`.
+- **Frontend publik:** Next.js Static Export → upload **artifact build** (mis. `out/`) ke `/public_html/beta/`.
 - **Backend API (CMS):**
-  - Paling rapi: `api-beta.majelis.info` (subdomain API).
-  - Alternatif: `/public_html/beta/api` (tergantung dukungan host).
+  - Paling rapi: `api-beta.majelis.info` (subdomain API, document root ke `.../api/public`).
+  - Alternatif shared hosting: `/public_html/beta/api` (document root ke `/public_html/beta/api/public` via `.htaccess`/rewrite).
+
+**Prinsip penting:** jangan deploy source mentah lalu berharap server build — build di CI, upload artifact.
 
 Tujuan MVP: event listing, event detail, map Leaflet, tombol WhatsApp.
 
