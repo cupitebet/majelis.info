@@ -90,6 +90,9 @@ config.php
 database.php
 credentials.json
 
+# MCP config (may contain API tokens)
+.mcp.json
+
 # Node modules (jika ada)
 node_modules/
 npm-debug.log
